@@ -47,6 +47,6 @@ fars_summarize_years(2013:2015)
 Plots the location of the accidents. Use the state code and year as arguments.
 
 ```{r fars_map_state_example}
-setwd(system.file("extdata", package = "fars"))
+setwd(system.file("extdata", package = "farspack"))
 fars_map_state(45, 2015)
 ```
