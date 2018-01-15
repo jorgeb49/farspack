@@ -1,6 +1,6 @@
 #' Read csv file
 #'
-#' This is a simple function that, by default, reads the file specified with the 
+#' This is a simple function that, by default, reads the file specified with the
 #' \code{filename} argument.
 #'
 #' @param filename Name of the csv file that will be read as table data
@@ -11,10 +11,13 @@
 #' @note An error will occur if the file does not exist
 #'
 #' @examples
+#' \dontrun{
 #' fars_read('accident_2013.csv.bz2')
+#'}
 #'
-#' @importFrom readr readcsv
+#' @importFrom readr read_csv
 #' @importFrom dplyr tbl_df
+#' @export
 fars_read <- function(filename) {
         if(!file.exists(filename))
                 stop("file '", filename, "' does not exist")
@@ -26,18 +29,20 @@ fars_read <- function(filename) {
 
 #' Create file name
 #'
-#' This is a simple function that, takes a string argument, \code{year}, 
+#' This is a simple function that, takes a string argument, \code{year},
 #' to create the name of the file that will hold the accidents for that repsectcive year
 #'
 #' @param year This is the year of the data that will be hold in the file
 #'
-#' @return This function returns the proper name for the file containing the accidents data 
+#' @return This function returns the proper name for the file containing the accidents data
 #' from the year specified as an argument.
 #'
 #' @note An error will occur if not a  proper year is specicfied as an argument
 #'
 #' @examples
+#' \dontrun{
 #' make_filename(2012)
+#' }
 make_filename <- function(year) {
         year <- as.integer(year)
         sprintf("accident_%d.csv.bz2", year)
@@ -45,7 +50,7 @@ make_filename <- function(year) {
 
 #' Read accident files
 #'
-#' This is a simple function that, takes an array of years as input, 
+#' This is a simple function that, takes an array of years as input,
 #' to read the files that hold the accidents for those repsectcive years
 #'
 #' @param years This is the years of the data that will be hold in the files
@@ -65,7 +70,7 @@ fars_read_years <- function(years) {
                 file <- make_filename(year)
                 tryCatch({
                         dat <- fars_read(file)
-                        dplyr::mutate(dat, year = year) %>% 
+                        dplyr::mutate(dat, year = year) %>%
                                 dplyr::select(MONTH, year)
                 }, error = function(e) {
                         warning("invalid year: ", year)
@@ -76,7 +81,7 @@ fars_read_years <- function(years) {
 
 #' Read and summarize accident files
 #'
-#' This is a simple function that, takes an array of years as input, 
+#' This is a simple function that, takes an array of years as input,
 #' to read the files that hold the accidents for those repsectcive years and summarize the data
 #'
 #' @param years This is the years of the data that will be summarized
@@ -86,15 +91,17 @@ fars_read_years <- function(years) {
 #' @note An error will occur if a file does not exist for those yerass or the years inout are not valid
 #'
 #' @examples
+#' \dontrun{
 #' fars_summarize_years(c(2013,2014))
+#'}
 #'
 #' @importFrom dplyr mutate select
 #'
 #' @export
 fars_summarize_years <- function(years) {
         dat_list <- fars_read_years(years)
-        dplyr::bind_rows(dat_list) %>% 
-                dplyr::group_by(year, MONTH) %>% 
+        dplyr::bind_rows(dat_list) %>%
+                dplyr::group_by(year, MONTH) %>%
                 dplyr::summarize(n = n()) %>%
                 tidyr::spread(year, n)
 }
@@ -102,22 +109,25 @@ fars_summarize_years <- function(years) {
 
 #' Creates state map with accident of given year
 #'
-#' This is a function that, takes a sate and set of yeyars as input, 
+#' This is a function that, takes a sate and set of yeyars as input,
 #' the data is plotted ina a mapof the state for the respective years
 #'
 #' @param state.num This is a number corresponding to the state of which the map will be created
-#' @param years This is the years of the data that will be presented
+#' @param year This is the years of the data that will be presented
 #'
 #' @return This function returns the mapped data of the respective years for the states of interest
 #'
-#' @note An error will occur if a file does not exist for those yerass or the years inout are not valid 
+#' @note An error will occur if a file does not exist for those yerass or the years inout are not valid
 #' or if the numbers do not correspond to a state
 #'
 #' @examples
+#' \dontrun{
 #' fars_map_state(1,2013)
+#' }
 #'
-#' @importFrom dplyr mutate select filter
+#' @importFrom dplyr filter
 #' @importFrom graphics points
+#' @importFrom maps map
 #'
 #' @export
 fars_map_state <- function(state.num, year) {

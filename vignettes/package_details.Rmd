@@ -9,57 +9,44 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+
+```{r, echo = FALSE, include = FALSE}
+library(farspack)
+library(dplyr)
+library(maps)
 ```
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+This package `farspack` provides functions to access data from the FARS - Fatality Analysis Reporting System- records. According to their webpage "FARS is a nationwide census providing NHTSA, Congress and the American public yearly data regarding fatal injuries suffered in motor vehicle traffic crashes".
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+## Functions Implemented
 
-## Vignette Info
+The following functions are available to the user (expored):
 
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+- `fars_read()`
+- `fars_summarize_years()`
+- `fars_map_state()`
 
-## Styles
 
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+## Read Data (`fars_read()`)
+Reads files in a given path. Use path as argument
+```{r fars_read_example}
+filename <- system.file("extdata/accident_2013.csv.bz2", package = "fars")
+fars_read(filename)
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+## Summarize Accidents (`fars_summarize_years()`)
+Summarize the count of fatalities per mnth per year. use the years of interest as argument.
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+```{r fars_summarize_years_example}
+setwd(system.file("extdata", package = "fars"))
+fars_summarize_years(2013:2015)
 ```
 
-Also a quote using `>`:
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+## Accidents Map (`fars_map_state()`)
+Plots the location of the accidents. Use the state code and year as arguments.
+
+```{r fars_map_state_example}
+setwd(system.file("extdata", package = "fars"))
+fars_map_state(45, 2015)
+```
