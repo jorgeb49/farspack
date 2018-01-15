@@ -12,3 +12,5 @@ You can install farspack from github with:
 # install.packages("devtools")
 devtools::install_github("jorgeb49/farspack")
 ```
+## Travis shield
+[![Travis-CI Build Status](https://travis-ci.org/jorgeb49/farspack.svg?branch=master)](https://travis-ci.org/jorgeb49/farspack)
