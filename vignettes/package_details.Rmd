@@ -30,7 +30,7 @@ The following functions are available to the user (expored):
 ## Read Data (`fars_read()`)
 Reads files in a given path. Use path as argument
 ```{r fars_read_example}
-filename <- system.file("extdata/accident_2013.csv.bz2", package = "fars")
+filename <- system.file("extdata/accident_2013.csv.bz2", package = "farspack")
 fars_read(filename)
 ```
 
@@ -38,7 +38,7 @@ fars_read(filename)
 Summarize the count of fatalities per mnth per year. use the years of interest as argument.
 
 ```{r fars_summarize_years_example}
-setwd(system.file("extdata", package = "fars"))
+setwd(system.file("extdata", package = "farspack"))
 fars_summarize_years(2013:2015)
 ```
 
